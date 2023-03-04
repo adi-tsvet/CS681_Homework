@@ -1,6 +1,6 @@
 package edu.umb.cs681.hw03;
 import edu.umb.cs681.hw03.DJIAApp.*;
-import edu.umb.cs681.hw03.observer.CandleStickObserver;
+import edu.umb.cs681.hw03.observer.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,7 +16,8 @@ import java.util.stream.Stream;
 public class MainApplication {
 
     static Path path = Paths.get("./HistoricalPrices.csv");
-    static CandleStickObserver candleObserver = new CandleStickObserver();
+    static WkCandleStickObserver wkCandleObserver = new WkCandleStickObserver();
+    static MthCandleStickObserver MthCandleObserver = new MthCandleStickObserver();
     static DJIAWkSummaryObservable weeklyObservable = new DJIAWkSummaryObservable();
     static DJIAMthSummaryObservable monthlyObservable = new DJIAMthSummaryObservable();
 
@@ -37,8 +38,8 @@ public class MainApplication {
 
     public static void main(String[] args) {
 
-        weeklyObservable.addObserver(candleObserver);
-        monthlyObservable.addObserver(candleObserver);
+        weeklyObservable.addObserver(wkCandleObserver);
+        monthlyObservable.addObserver(MthCandleObserver);
         try {
             List<List<Double>> csv = parseCSVFile(path);
             for (List<Double> row : csv) {
@@ -46,7 +47,6 @@ public class MainApplication {
                 double high = row.get(1);
                 double low = row.get(2);
                 double close = row.get(3);
-
                 DSummary dSummary = new DSummary(open, high, low, close);
                 weeklyObservable.addSummary(dSummary);
                 monthlyObservable.addSummary(dSummary);

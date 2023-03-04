@@ -5,7 +5,7 @@ import edu.umb.cs681.hw03.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DJIAMthSummaryObservable extends Observable<Object> {
+public class DJIAMthSummaryObservable extends Observable<MthSummary> {
 
     private List<DSummary> dailySummaries = new ArrayList<>();
     private List<WkSummary> weeklySummaries = new ArrayList<>();

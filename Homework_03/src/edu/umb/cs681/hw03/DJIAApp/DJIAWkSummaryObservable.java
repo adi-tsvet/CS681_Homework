@@ -13,11 +13,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class DJIAWkSummaryObservable extends Observable<Object> {
+public class DJIAWkSummaryObservable extends Observable<WkSummary> {
 
     private List<DSummary> dailySummaries = new ArrayList<>();
     private List<WkSummary> weeklySummaries = new ArrayList<>();
-    private List<MthSummary> monthlySummaries = new ArrayList<>();
     private WkSummary weeklySummary;
     public void addSummary(DSummary dSummary) {
         dailySummaries.add(dSummary);
