@@ -236,10 +236,13 @@ public class BostonHousing {
         for (int i = 0; i < 4; i++) {
             Thread thread = new Thread(processor.get(i));
             threads.add(thread);
-            System.out.println("Thread #" + thread.threadId()+ " started !");
+            System.out.println("Thread #" + thread.threadId()+" for Data Process "+i+ " started !");
             thread.start();
-            thread.join();
-            System.out.println("Thread #" + thread.threadId()+ " finished !");
+        }
+
+        for (int i = 0; i < 4; i++) {
+            threads.get(i).join();
+            System.out.println("Thread #" + threads.get(i).threadId()+" for Data Process "+i+ " finished !");
         }
     }
 }
