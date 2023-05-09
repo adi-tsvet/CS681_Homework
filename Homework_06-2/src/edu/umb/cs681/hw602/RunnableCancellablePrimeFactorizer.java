@@ -21,28 +21,30 @@ public class RunnableCancellablePrimeFactorizer extends RunnablePrimeFactorizer 
     }
 
     public void generatePrimeFactors() {
-        lock.lock();
-        try {
+
+
             long divisor = from;
             while (dividend != 1 && divisor <= to && !done) {
-                if (divisor > 2 && isEven(divisor)) {
-                    divisor++;
-                    continue;
-                }
-                if (dividend % divisor == 0) {
-                    factors.add(divisor);
-                    dividend /= divisor;
-                } else {
-                    if (divisor == 2) {
+                try {
+                    lock.lock();
+                    if (divisor > 2 && isEven(divisor)) {
                         divisor++;
-                    } else {
-                        divisor += 2;
+                        continue;
                     }
+                    if (dividend % divisor == 0) {
+                        factors.add(divisor);
+                        dividend /= divisor;
+                    } else {
+                        if (divisor == 2) {
+                            divisor++;
+                        } else {
+                            divisor += 2;
+                        }
+                    }
+                } finally {
+                    lock.unlock();
                 }
             }
-        } finally {
-            lock.unlock();
-        }
     }
 
     public static void main(String[] args) {
