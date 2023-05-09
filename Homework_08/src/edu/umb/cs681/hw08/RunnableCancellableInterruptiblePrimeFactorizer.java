@@ -1,36 +1,22 @@
 package edu.umb.cs681.hw08;
 
-import java.util.concurrent.locks.ReentrantLock;
 
 public class RunnableCancellableInterruptiblePrimeFactorizer extends RunnableCancellablePrimeFactorizer {
-
-    private volatile boolean done = false;
-    private ReentrantLock lock = new ReentrantLock();
 
     public RunnableCancellableInterruptiblePrimeFactorizer(long dividend, long from, long to) {
         super(dividend, from, to);
     }
 
-    public void setDone() {
-        lock.lock();
-        try {
-            done = true;
-        } finally {
-            lock.unlock();
-        }
-    }
-
     public void generatePrimeFactors() {
-        Thread currentThread = Thread.currentThread();
-        while (!done) {
-            lock.lock();
-            try {
-                if (currentThread.isInterrupted()) {
-                    System.out.println("Thread interrupted.");
-                    return;
-                }
-                long divisor = from;
-                while (dividend != 1 && divisor <= to && !done) {
+            long divisor = from;
+            while (dividend != 1 && divisor <= to) {
+                try {
+                    lock.lock();
+                    if(done){
+                        System.out.println("Stopped. Thread Interrupted");
+                        this.factors.clear();
+                        break;
+                    }
                     if (divisor > 2 && isEven(divisor)) {
                         divisor++;
                         continue;
@@ -46,11 +32,16 @@ public class RunnableCancellableInterruptiblePrimeFactorizer extends RunnableCan
                         }
                     }
                 }
-            } finally {
-                lock.unlock();
+                finally {
+                    lock.unlock();
+                }
+                try {
+                    Thread.sleep(1000);
+                }catch(InterruptedException e) {
+                    System.out.println(e.toString());
+                    continue;
+                }
             }
-        }
-        System.out.println("Task completed.");
     }
 
     public static void main(String[] args) {
@@ -69,6 +60,7 @@ public class RunnableCancellableInterruptiblePrimeFactorizer extends RunnableCan
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         System.out.println("Factors found: " + factorizer.getPrimeFactors());
     }
 }
