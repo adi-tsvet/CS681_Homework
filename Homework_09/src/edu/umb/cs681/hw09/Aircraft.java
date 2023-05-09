@@ -1,10 +1,11 @@
 package edu.umb.cs681.hw09;
 
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Aircraft {
     private final ReentrantLock lock = new ReentrantLock();
-    private volatile Position position; // Shared (non-final) variable
+    private Position position; // Shared (non-final) variable
 
     public Aircraft(Position pos) {
         this.position = pos;

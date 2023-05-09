@@ -11,11 +11,7 @@ public class AircraftMainTest {
             threads[i].setName("Thread " + i);
             threads[i].start();
         }
-
         Thread.sleep(7000);
 
-        for (Thread thread : threads) {
-            thread.interrupt();
-        }
     }
 }
