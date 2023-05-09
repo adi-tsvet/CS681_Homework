@@ -1,0 +1,45 @@
+
+<project name="homework-17-DIY-Traffic-Signal-Deadlock" basedir="."  default="run" >
+    <property name="src" location="src" />
+    <property name="bin" location="bin" />
+    <property name="suppress_system_warnings" value="true"/>
+
+
+    <path id="classpath">
+        <pathelement location="${bin}" />
+    </path>
+
+    <target name="init">
+        <mkdir dir="${bin}"/>
+        <echo message="CLASSPATH: ${toString:classpath}" />
+    </target>
+
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="edu/umb/cs681/hw17/Deadlock_Prone/*.java"/>
+            <include name="edu/umb/cs681/hw17/Deadlock_Safe/*.java"/>
+        </javac>
+
+    </target>
+    <target name="run" depends="compile">
+        <java classname="edu.umb.cs681.hw17.Deadlock_Prone.TrafficSignal_Deadlock">
+            <classpath>
+                <pathelement location="${bin}"/>
+            </classpath>
+        </java>
+        <java classname="edu.umb.cs681.hw17.Deadlock_Safe.TrafficSignal_Deadlock_Safe">
+            <classpath>
+                <pathelement location="${bin}"/>
+            </classpath>
+        </java>
+    </target>
+
+<!--    <target name="clean" depends="run">-->
+<!--        <delete includeemptydirs="true">-->
+<!--            <fileset dir="${bin}/edu/umb/cs681/hw16" includes="**/*"/>-->
+<!--        </delete>-->
+<!--    </target>-->
+
+</project>
