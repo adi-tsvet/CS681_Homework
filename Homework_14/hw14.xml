@@ -1,5 +1,5 @@
 
-<project name="homework-14-AdmissionMonitor-ThreadSafe-ReentrantReadWriteLock" basedir="."  default="run" >
+<project name="homework-14-AdmissionMonitor-ThreadSafe-ReentrantReadWriteLock" basedir="."  default="clean" >
     <property name="src" location="src" />
     <property name="bin" location="bin" />
     <property name="suppress_system_warnings" value="true"/>
