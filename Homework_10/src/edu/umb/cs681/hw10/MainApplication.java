@@ -60,9 +60,6 @@ public class MainApplication {
         // Create a list of extra threads
         List<Thread> extraThreads = new ArrayList<>();
 
-//        System.out.println("Accessing Directory: "+ rootDir.get(0).getName());
-//
-//        System.out.println("Children : "+ children);
 
         for (int i = 0; i < 10; i++) {
             Thread t = new Thread(() -> {
