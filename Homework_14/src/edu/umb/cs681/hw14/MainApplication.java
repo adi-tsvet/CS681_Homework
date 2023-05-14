@@ -6,42 +6,29 @@ public class MainApplication {
         AdmissionMonitor monitor = new AdmissionMonitor();
         EntranceHandler[] entranceHandlers = new EntranceHandler[10];
         ExitHandler[] exitHandlers = new ExitHandler[10];
-        StatsHandler statsHandler = new StatsHandler(monitor);
+        StatsHandler[] statsHandler = new StatsHandler[10];
 
-        // Start entrance threads
-        for (int i = 0; i < entranceHandlers.length; i++) {
+        // Starting 10 threads for Entrance and Exit with Stats
+        for (int i = 0; i < 10; i++) {
             entranceHandlers[i] = new EntranceHandler(monitor);
-            new Thread(entranceHandlers[i]).start();
-        }
-
-        // Start exit threads
-        for (int i = 0; i < exitHandlers.length; i++) {
             exitHandlers[i] = new ExitHandler(monitor);
+            statsHandler[i] = new StatsHandler(monitor);
+            new Thread(entranceHandlers[i]).start();
             new Thread(exitHandlers[i]).start();
+            new Thread(statsHandler[i]).start();
         }
 
-        // Start stats thread
-        new Thread(statsHandler).start();
 
-
-        // Stop all threads
+        // 2-Step Termination
         for (EntranceHandler handler : entranceHandlers) {
-            handler.stop();
+            handler.setDone();
         }
         for (ExitHandler handler : exitHandlers) {
-            handler.stop();
+            handler.setDone();
         }
-        statsHandler.stop();
-
-        // Interrupt all handlers to ensure they stop immediately
-        for (EntranceHandler handler : entranceHandlers) {
-            new Thread(handler).interrupt();
+        for (StatsHandler handler : statsHandler) {
+            handler.setDone();
         }
-        for (ExitHandler handler : exitHandlers) {
-            new Thread(handler).interrupt();
-        }
-        new Thread(statsHandler).interrupt();
-
 
     }
 }

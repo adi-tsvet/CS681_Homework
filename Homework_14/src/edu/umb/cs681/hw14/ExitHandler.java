@@ -1,26 +1,25 @@
 package edu.umb.cs681.hw14;
 
+import java.time.Duration;
+
 class ExitHandler implements Runnable {
     private AdmissionMonitor monitor;
-    private volatile boolean flag;
+    private volatile boolean done = false;
 
     public ExitHandler(AdmissionMonitor monitor) {
         this.monitor = monitor;
-        this.flag = true;
     }
 
     public void run() {
-        while (flag)  {
-            try {
-                monitor.exit();
-            }
-            catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+        while (!done) {
+            monitor.exit();
+        }
+        if(done){
+            System.out.println("Terminated Exit Thread...");
         }
     }
 
-    public void stop() {
-        flag = false;
+    public void setDone() {
+        done = true;
     }
 }

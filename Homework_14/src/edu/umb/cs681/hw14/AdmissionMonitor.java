@@ -9,7 +9,7 @@ class AdmissionMonitor {
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
     private final Condition condition = rwLock.writeLock().newCondition();
 
-    public void enter() throws InterruptedException {
+    public void enter() {
         rwLock.writeLock().lock();
         try {
             while (currentVisitors >= 10) {
@@ -17,26 +17,29 @@ class AdmissionMonitor {
             }
             currentVisitors++;
             System.out.println("Visitor Entered !\n Count: "+ currentVisitors);
-        } finally {
+        }
+        catch (InterruptedException exception){
+            exception.printStackTrace();
+        }
+        finally {
             rwLock.writeLock().unlock();
         }
     }
 
-    public void exit() throws InterruptedException {
+    public void exit(){
         rwLock.writeLock().lock();
         try {
-            while (currentVisitors <= 0) {
-                condition.await();
+            if (currentVisitors > 0) {
+                currentVisitors--;
+                System.out.println("Visitor Exited!\nCount: " + currentVisitors);
             }
-            currentVisitors--;
-            System.out.println("Visitor Exited !\n Count: "+ currentVisitors);
             condition.signalAll();
         } finally {
             rwLock.writeLock().unlock();
         }
     }
 
-    public int countCurrentVisitors() throws InterruptedException{
+    public int countCurrentVisitors() {
         rwLock.readLock().lock();
         try {
             System.out.println("Current Visitor Count: "+ currentVisitors);

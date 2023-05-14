@@ -1,27 +1,25 @@
 package edu.umb.cs681.hw14;
 
+import java.time.Duration;
+
 class StatsHandler implements Runnable {
     private AdmissionMonitor monitor;
-    private volatile boolean flag;
+    private volatile boolean done = false;
 
     public StatsHandler(AdmissionMonitor monitor) {
         this.monitor = monitor;
-        this.flag = true;
     }
 
     public void run() {
-        while (flag)  {
-            try {
-                monitor.countCurrentVisitors();
-
-            }
-            catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+        while (!done) {
+            monitor.countCurrentVisitors();
+        }
+        if(done){
+            System.out.println("Terminated Stats Thread...");
         }
     }
 
-    public void stop() {
-        flag = false;
+    public void setDone() {
+        done = true;
     }
 }
