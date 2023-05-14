@@ -13,30 +13,15 @@ public class Link extends FSElement {
     }
 
     public boolean isDirectory() {
-        lock.lock();
-        try {
             return false;
-        } finally {
-            lock.unlock();
-        }
     }
 
     public boolean isFile() {
-        lock.lock();
-        try {
             return false;
-        } finally {
-            lock.unlock();
-        }
     }
 
     public boolean isLink() {
-        lock.lock();
-        try {
             return true;
-        } finally {
-            lock.unlock();
-        }
     }
 
     public FSElement getTarget() {

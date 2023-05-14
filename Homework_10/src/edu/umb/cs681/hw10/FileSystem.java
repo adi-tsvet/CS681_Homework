@@ -24,10 +24,7 @@ public class FileSystem {
     }
 
     public LinkedList<Directory> getRootDirectory() {
-
             return this.directory;
-
-
     }
     public Directory getRoot() {
 
