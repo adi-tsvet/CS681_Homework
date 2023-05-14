@@ -1,0 +1,36 @@
+
+<project name="homework-15-StockQuoteObservable-ThreadSafe-OpenCall" basedir="."  default="run" >
+    <property name="src" location="src" />
+    <property name="bin" location="bin" />
+    <property name="suppress_system_warnings" value="true"/>
+
+
+    <path id="classpath">
+        <pathelement location="${bin}" />
+    </path>
+
+    <target name="init">
+        <mkdir dir="${bin}"/>
+        <echo message="CLASSPATH: ${toString:classpath}" />
+    </target>
+
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="edu/umb/cs681/hw15/StockApp/*.java"/>
+            <include name="edu/umb/cs681/hw15/observer/*.java"/>
+            <include name="edu/umb/cs681/hw15/*.java"/>
+        </javac>
+
+    </target>
+    <target name="run" depends="compile">
+        <java classname="edu.umb.cs681.hw15.TestStockQuoteObservable">
+            <classpath>
+                <pathelement location="${bin}"/>
+            </classpath>
+        </java>
+    </target>
+
+
+</project>
