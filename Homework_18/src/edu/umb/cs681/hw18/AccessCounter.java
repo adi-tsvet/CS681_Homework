@@ -2,9 +2,12 @@ package edu.umb.cs681.hw18;
 
 import java.nio.file.Path;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AccessCounter {
-    private static AccessCounter instance = new AccessCounter();
+    private static AccessCounter instance = null;
+    private static Lock lock = new ReentrantLock();
     private ConcurrentHashMap<Path, Integer> accessCount;
 
     private AccessCounter() {
@@ -12,6 +15,14 @@ public class AccessCounter {
     }
 
     public static AccessCounter getInstance() {
+        lock.lock();
+        try {
+            if (instance == null) {
+                instance = new AccessCounter();
+            }
+        } finally {
+            lock.unlock();
+        }
         return instance;
     }
 
