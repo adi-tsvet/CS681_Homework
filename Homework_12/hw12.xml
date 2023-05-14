@@ -1,5 +1,5 @@
 
-<project name="homework-12-BankAccount2-ThreadSafe" basedir="."  default="clean" >
+<project name="homework-12-ThreadSafeBankAccount2-2-StepTermination" basedir="."  default="clean" >
     <property name="src" location="src" />
     <property name="bin" location="bin" />
     <property name="suppress_system_warnings" value="true"/>
