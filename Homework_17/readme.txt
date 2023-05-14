@@ -19,6 +19,14 @@ If the counter exceeds a threshold of 10 (indicating that the program has been w
 the code prints a message indicating that a deadlock has been detected and terminates the program
 using the System.exit() method with an exit status of 0.
 
-To prevent deadlock, the TrafficSignal_Deadlock_Safe class sorts the ReentrantLock objects
-by their identity hash code, which ensures that the locks are acquired in the same order across all movements,
-preventing the circular wait condition of the deadlock problem.
+The TrafficSignal_Deadlock_Safe class is deadlock-free. The locks are acquired and released in a consistent and
+predetermined order, preventing any circular wait and potential deadlocks.
+The acquireLocks method acquires the locks in the locks array in a specific order.
+It first acquires lock1 and lock2 locks and then acquires all other locks in the array.
+The additional locks are acquired temporarily but immediately released using lock.unlock() to avoid potential deadlocks.
+The releaseLocks method releases the locks in the reverse order of acquisition.
+It releases lock1 and lock2 locks and skips the release of other locks in the array since they were acquired
+temporarily and immediately released in the acquireLocks method.
+
+By ensuring a consistent order of lock acquisition and release,
+the code guarantees that there won't be any circular wait and eliminates the possibility of deadlocks.

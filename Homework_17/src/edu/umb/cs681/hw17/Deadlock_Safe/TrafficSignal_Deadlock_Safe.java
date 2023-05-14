@@ -5,12 +5,12 @@ import java.util.Comparator;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class TrafficSignal_Deadlock_Safe {
-    private ReentrantLock northLock;
-    private ReentrantLock southLock;
-    private ReentrantLock eastLock;
-    private ReentrantLock westLock;
+    private final ReentrantLock northLock;
+    private final ReentrantLock southLock;
+    private final ReentrantLock eastLock;
+    private final ReentrantLock westLock;
 
-    private ReentrantLock[] locks;
+    private final ReentrantLock[] locks;
 
     public TrafficSignal_Deadlock_Safe() {
         northLock = new ReentrantLock();
@@ -25,44 +25,74 @@ public class TrafficSignal_Deadlock_Safe {
 
     public void northToWest() {
         acquireLocks(northLock, westLock);
-        System.out.println(Thread.currentThread().getName() + " acquired North and West lock");
-        System.out.println(Thread.currentThread().getName() + " is turning left from North towards West");
-        System.out.println(Thread.currentThread().getName() + " released North and West lock");
-        releaseLocks(northLock, westLock);
+        try {
+            System.out.println(Thread.currentThread().getName() + " acquired North and West lock");
+            System.out.println(Thread.currentThread().getName() + " is turning left from North towards West");
+            System.out.println(Thread.currentThread().getName() + " released North and West lock");
+        }
+        finally {
+            releaseLocks(northLock, westLock);
+        }
+
     }
 
     public void southToNorth() {
         acquireLocks(southLock, northLock);
-        System.out.println(Thread.currentThread().getName() + " acquired South and North lock");
-        System.out.println(Thread.currentThread().getName() + " is going straight from South towards North");
-        System.out.println(Thread.currentThread().getName() + " released South and North lock");
-        releaseLocks(southLock, northLock);
+        try{
+            System.out.println(Thread.currentThread().getName() + " acquired South and North lock");
+            System.out.println(Thread.currentThread().getName() + " is going straight from South towards North");
+            System.out.println(Thread.currentThread().getName() + " released South and North lock");
+        }
+        finally {
+            releaseLocks(southLock, northLock);
+        }
+
     }
 
     public void eastToWest() {
         acquireLocks(eastLock, westLock);
-        System.out.println(Thread.currentThread().getName() + " acquired East and West lock");
-        System.out.println(Thread.currentThread().getName() + " is going straight from East towards West");
-        System.out.println(Thread.currentThread().getName() + " released East and West lock");
-        releaseLocks(eastLock, westLock);
+        try {
+            System.out.println(Thread.currentThread().getName() + " acquired East and West lock");
+            System.out.println(Thread.currentThread().getName() + " is going straight from East towards West");
+            System.out.println(Thread.currentThread().getName() + " released East and West lock");
+        }
+        finally {
+            releaseLocks(eastLock, westLock);
+        }
+
     }
 
     public void westToNorth() {
         acquireLocks(westLock, northLock);
-        System.out.println(Thread.currentThread().getName() + " acquired West and North lock");
-        System.out.println(Thread.currentThread().getName() + " is turning right from West towards North");
-        System.out.println(Thread.currentThread().getName() + " released West and North lock");
-        releaseLocks(westLock, northLock);
+        try {
+            System.out.println(Thread.currentThread().getName() + " acquired West and North lock");
+            System.out.println(Thread.currentThread().getName() + " is turning right from West towards North");
+            System.out.println(Thread.currentThread().getName() + " released West and North lock");
+        }
+        finally {
+            releaseLocks(westLock, northLock);
+        }
+
     }
 
     private void acquireLocks(ReentrantLock lock1, ReentrantLock lock2) {
-        lock1.lock();
-        lock2.lock();
+        for (ReentrantLock lock : locks) {
+            if (lock == lock1 || lock == lock2) {
+                lock.lock();
+            } else {
+                lock.lock();
+                lock.unlock(); // Unlock immediately to avoid deadlocks
+            }
+        }
     }
 
     private void releaseLocks(ReentrantLock lock1, ReentrantLock lock2) {
-        lock1.unlock();
-        lock2.unlock();
+        for (int i = locks.length - 1; i >= 0; i--) {
+            ReentrantLock lock = locks[i];
+            if (lock == lock1 || lock == lock2) {
+                lock.unlock();
+            }
+        }
     }
 
     public static void main(String[] args) {
