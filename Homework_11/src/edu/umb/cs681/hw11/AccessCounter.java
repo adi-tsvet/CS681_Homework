@@ -17,15 +17,13 @@ public class AccessCounter {
     }
 
     public static AccessCounter getInstance() {
-        if (instance == null) {
-            lock.lock();
-            try {
-                if (instance == null) {
-                    instance = new AccessCounter();
-                }
-            } finally {
-                lock.unlock();
+        lock.lock();
+        try {
+            if (instance == null) {
+                instance = new AccessCounter();
             }
+        } finally {
+            lock.unlock();
         }
         return instance;
     }
