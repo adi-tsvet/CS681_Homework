@@ -66,6 +66,7 @@ public class MainApplication {
             runnables[i] = new FileSystemRunnable();
             new Thread(runnables[i]).start();
         }
+        //2-step termination by using Explicit Thread Termination with a Flag
         for (FileSystemRunnable handler : runnables) {
             handler.setDone();
         }
