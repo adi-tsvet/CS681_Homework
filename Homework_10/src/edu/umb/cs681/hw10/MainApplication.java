@@ -54,21 +54,38 @@ public class MainApplication {
         e.setTarget(x);
     }
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) throws InterruptedException {
 
         // Initialize the directory structure
         init();
 
         // Create a list of extra threads
         FileSystemRunnable[] runnables = new FileSystemRunnable[10];
+        Thread[] threads = new Thread[10];
 
-        for (int i = 0; i < runnables.length; i++) {
+        for (int i = 0; i < 10; i++) {
             runnables[i] = new FileSystemRunnable();
-            new Thread(runnables[i]).start();
+            threads[i] = new Thread(runnables[i]);
+            threads[i].start();
+            System.out.println("Thread #"+threads[i].getId() + " started !");
         }
-        //2-step termination by using Explicit Thread Termination with a Flag
+
+
+        //2-step termination by using Explicit with Flag and Interruption
         for (FileSystemRunnable handler : runnables) {
             handler.setDone();
+        }
+
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

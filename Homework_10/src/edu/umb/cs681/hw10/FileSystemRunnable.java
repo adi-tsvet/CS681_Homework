@@ -19,6 +19,7 @@ public class FileSystemRunnable implements Runnable{
             LinkedList<Directory> rootDir = fs.getRootDirectory();
             List<FSElement> children = rootDir.get(0).getChildren();
             for (FSElement child : children) {
+
                 if (child.isDirectory()) {
                     Directory dir = (Directory) child;
                     System.out.println("Accessing Directory: " + dir.getName());
@@ -46,6 +47,12 @@ public class FileSystemRunnable implements Runnable{
 
                 }
             }
+        }
+
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {
+            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
         }
     }
 }
