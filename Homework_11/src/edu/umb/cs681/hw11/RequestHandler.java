@@ -8,6 +8,9 @@ public class RequestHandler implements Runnable {
     private Path[] files;
     private volatile boolean done = false;
 
+    public void setDone() {
+        done = true;
+    }
     public RequestHandler(AccessCounter accessCounter, Path[] files) {
         this.accessCounter = accessCounter;
         this.files = files;
@@ -24,7 +27,5 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    public void setDone() {
-        done = true;
-    }
+
 }
