@@ -1,0 +1,39 @@
+
+<project name="homework-20-DataProcessing-ParallelStream-API" basedir="."  default="clean" >
+    <property name="src" location="src" />
+    <property name="bin" location="bin" />
+    <property name="suppress_system_warnings" value="true"/>
+
+
+    <path id="classpath">
+        <pathelement location="${bin}" />
+    </path>
+
+    <target name="init">
+        <mkdir dir="${bin}"/>
+        <echo message="CLASSPATH: ${toString:classpath}" />
+    </target>
+
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${bin}" includeAntRuntime="no">
+            <classpath refid="classpath"/>
+            <include name="edu/umb/cs681/hw20/*.java"/>
+        </javac>
+
+    </target>
+    <target name="run" depends="compile">
+        <java classname="edu.umb.cs681.hw20.BostonHousing">
+            <classpath>
+                <pathelement location="${bin}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="clean" depends="run">
+        <delete includeemptydirs="true">
+            <fileset dir="${bin}/edu/umb/cs681/hw20" includes="**/*"/>
+        </delete>
+    </target>
+
+</project>
