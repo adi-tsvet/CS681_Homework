@@ -10,17 +10,12 @@ public class TrafficSignal_Deadlock_Safe {
     private final ReentrantLock eastLock;
     private final ReentrantLock westLock;
 
-    private final ReentrantLock[] locks;
 
     public TrafficSignal_Deadlock_Safe() {
         northLock = new ReentrantLock();
         southLock = new ReentrantLock();
         eastLock = new ReentrantLock();
         westLock = new ReentrantLock();
-
-        //Ordering Locks to avoid circular wait
-        locks = new ReentrantLock[] {northLock, southLock, eastLock, westLock};
-        Arrays.sort(locks, Comparator.comparingInt(lock -> System.identityHashCode(lock)));
     }
 
     public void northToWest() {
@@ -76,22 +71,37 @@ public class TrafficSignal_Deadlock_Safe {
     }
 
     private void acquireLocks(ReentrantLock lock1, ReentrantLock lock2) {
-        for (ReentrantLock lock : locks) {
-            if (lock == lock1 || lock == lock2) {
-                lock.lock();
-            } else {
-                lock.lock();
-                lock.unlock(); // Unlock immediately to avoid deadlocks
-            }
+//        An example of globally-fixed order
+//        – First, acquire the lock of an account with a “smaller” ID
+//        – Then, acquire the lock of an account with a “bigger” ID
+
+        int lock1Id = lock1.hashCode();
+        int lock2Id = lock2.hashCode();
+
+        if( lock1Id < lock2Id ) {
+            lock1.lock();
+            lock2.lock();
+        }
+        else{
+            lock2.lock();
+            lock1.lock();
         }
     }
 
     private void releaseLocks(ReentrantLock lock1, ReentrantLock lock2) {
-        for (int i = locks.length - 1; i >= 0; i--) {
-            ReentrantLock lock = locks[i];
-            if (lock == lock1 || lock == lock2) {
-                lock.unlock();
-            }
+        int lock1Id = lock1.hashCode();
+        int lock2Id = lock2.hashCode();
+
+//        – First, release the lock of an account with a “bigger” ID
+//        – Then, release the lock of an account with a “smaller” ID
+
+        if( lock1Id > lock2Id ) {
+            lock1.unlock();
+            lock2.unlock();
+        }
+        else{
+            lock2.unlock();
+            lock1.unlock();
         }
     }
 
