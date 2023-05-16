@@ -19,17 +19,33 @@ public class TestStockQuoteObservable {
 
 
         DataHandler[] handlers = new DataHandler[10];
+        Thread[] threads = new Thread[10];
 
         // Start data handler threads
         for (int i = 0; i < handlers.length; i++) {
             String ticker = "TICKER_" + i;
             handlers[i] = new DataHandler(stockObservable, ticker);
-            new Thread(handlers[i]).start();
+            threads[i] = new Thread(handlers[i]);
+            threads[i].start();
+            System.out.println("Thread #"+threads[i].getId() + " started !");
+
         }
 
+        //2-step termination by using Explicit with Flag and Interruption
         for (DataHandler handler : handlers) {
             handler.setDone();
         }
 
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

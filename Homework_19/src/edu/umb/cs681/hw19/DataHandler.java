@@ -23,7 +23,12 @@ public class DataHandler implements Runnable {
             stockObservable.changeQuote(ticker, quote);
         }
         if(done){
-            System.out.println("\nTerminated Data Handler Thread#"+ Thread.currentThread().threadId());
+            System.out.println("\nStopped Data Handler Thread#"+ Thread.currentThread().threadId());
+        }
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {
+            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
         }
     }
 
