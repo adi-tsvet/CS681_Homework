@@ -6,6 +6,9 @@ class EntranceHandler implements Runnable {
     private AdmissionMonitor monitor;
     private volatile boolean done = false;
 
+    public void setDone() {
+        done = true;
+    }
     public EntranceHandler(AdmissionMonitor monitor) {
         this.monitor = monitor;
     }
@@ -15,12 +18,17 @@ class EntranceHandler implements Runnable {
             monitor.enter();
         }
         if(done){
-            System.out.println("Terminated Entrance Thread...");
+            System.out.println("Stopped Entrance Thread #" + Thread.currentThread().getId());
         }
+        try {
+            Thread.sleep(1000);
+        }
+        catch(InterruptedException e) {
+            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+        }
+
     }
 
-    public void setDone() {
-        done = true;
-    }
+
 
 }

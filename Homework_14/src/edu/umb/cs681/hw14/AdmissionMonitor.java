@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class AdmissionMonitor {
-    private int currentVisitors = 10;
+    private int currentVisitors = 0;
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
     private final Condition condition = rwLock.writeLock().newCondition();
 
@@ -18,9 +18,7 @@ class AdmissionMonitor {
             currentVisitors++;
             System.out.println("Visitor Entered !\n Count: "+ currentVisitors);
         }
-        catch (InterruptedException exception){
-            exception.printStackTrace();
-        }
+        catch (InterruptedException exception){}
         finally {
             rwLock.writeLock().unlock();
         }
