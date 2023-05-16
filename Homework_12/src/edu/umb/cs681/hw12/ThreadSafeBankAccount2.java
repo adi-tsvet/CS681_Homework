@@ -76,7 +76,10 @@ public class ThreadSafeBankAccount2 implements BankAccount {
 			threads[i + 5] = new Thread(withdrawRunnables[i]);
 
 			threads[i].start();
+			System.out.println("Thread #"+threads[i].getId() + " started !");
 			threads[i + 5].start();
+			System.out.println("Thread #"+threads[i+5].getId() + " started !");
+
 		}
 
 		for (DepositRunnable runnable : depositRunnables) {
@@ -85,6 +88,18 @@ public class ThreadSafeBankAccount2 implements BankAccount {
 
 		for (WithdrawRunnable runnable : withdrawRunnables) {
 			runnable.setDone();
+		}
+
+		for (Thread thread : threads) {
+			thread.interrupt();
+		}
+
+		for (Thread thread : threads) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
