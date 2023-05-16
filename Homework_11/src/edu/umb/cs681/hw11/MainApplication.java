@@ -10,16 +10,33 @@ public class MainApplication {
                 Paths.get("htmlFiles/c.html"), Paths.get("htmlFiles/d.html")};
 
         RequestHandler[] handlers = new RequestHandler[10];
+        Thread[] threads = new Thread[10];
 
-        for (int i = 0; i < handlers.length; i++) {
+        for (int i = 0; i < 10; i++) {
             AccessCounter accessCounter = AccessCounter.getInstance();
             handlers[i] = new RequestHandler(accessCounter, files);
-            new Thread(handlers[i]).start();
+            threads[i] = new Thread(handlers[i]);
+            threads[i].start();
+            System.out.println("Thread #"+threads[i].getId() + " started !");
+
         }
 
+        //2-step termination by using Explicit with Flag and Interruption
         for (RequestHandler handler : handlers) {
             handler.setDone();
         }
+        for (Thread thread : threads) {
+            thread.interrupt();
+        }
+
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
 

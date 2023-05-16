@@ -25,6 +25,12 @@ public class RequestHandler implements Runnable {
             //Calls getCount method
             System.out.println("Access count for " + file + ": " + accessCounter.getCount(file));
         }
+
+        try {
+            Thread.sleep(1000);
+        }catch(InterruptedException e) {
+            System.out.println("Thread #"+Thread.currentThread().getId() + "Thread Interrupted");
+        }
     }
 
 
