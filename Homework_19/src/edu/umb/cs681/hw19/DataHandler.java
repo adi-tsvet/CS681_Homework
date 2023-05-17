@@ -21,15 +21,14 @@ public class DataHandler implements Runnable {
             Random random = new Random();
             double quote = random.nextDouble() * 100;
             stockObservable.changeQuote(ticker, quote);
+            try {
+                Thread.sleep(1000);
+            }catch(InterruptedException e) {
+                System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+                break;
+            }
         }
-        if(done){
-            System.out.println("\nStopped Data Handler Thread#"+ Thread.currentThread().threadId());
-        }
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {
-            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
-        }
+
     }
 
     public void setDone() {

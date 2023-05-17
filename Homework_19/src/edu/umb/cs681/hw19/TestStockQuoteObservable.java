@@ -40,12 +40,5 @@ public class TestStockQuoteObservable {
             thread.interrupt();
         }
 
-        for (Thread thread : threads) {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 }
