@@ -47,12 +47,13 @@ public class FileSystemRunnable implements Runnable{
 
                 }
             }
-        }
-
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {
-            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+            // Make the thread sleep and then interrupt will be called to terminate.
+            try {
+                Thread.sleep(1000);
+            }catch(InterruptedException e) {
+                System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+                break;
+            }
         }
     }
 }
