@@ -22,6 +22,7 @@ class StatsHandler implements Runnable {
             }
             catch(InterruptedException e) {
                 System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+                break;
             }
         }
     }
