@@ -21,6 +21,7 @@ public class MainApplication {
 
         // Start all the threads
         for (Thread thread : threads) {
+            System.out.println("Thread #"+thread.getId() + " Started !");
             thread.start();
         }
 
