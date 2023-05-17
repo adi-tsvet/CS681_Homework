@@ -30,6 +30,7 @@ public class RequestHandler implements Runnable {
                 Thread.sleep(1000);
             }catch(InterruptedException e) {
                 System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+                break;
             }
         }
 

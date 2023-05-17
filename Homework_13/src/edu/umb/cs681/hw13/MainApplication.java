@@ -31,8 +31,6 @@ public class MainApplication {
         for (Thread thread : threads) {
             thread.interrupt();
         }
-
-
     }
 }
 
