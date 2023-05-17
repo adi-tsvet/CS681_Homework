@@ -17,13 +17,12 @@ public class DepositRunnable implements Runnable{
 
 		while(!done){
 			account.deposit(100);
-		}
-
-		try{
-			Thread.sleep(1000);
-		}
-		catch(InterruptedException exception){
-			System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+			try{
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException exception){
+				System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+			}
 		}
 	}
 }

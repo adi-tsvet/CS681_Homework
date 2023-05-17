@@ -15,12 +15,13 @@ public class WithdrawRunnable implements Runnable{
 	public void run(){
 		while(!done){
 			account.withdraw(100);
+			try{
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException exception){
+				System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+			}
 		}
-		try{
-			Thread.sleep(1000);
-		}
-		catch(InterruptedException exception){
-			System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
-		}
+
 	}
 }
