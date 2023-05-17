@@ -20,6 +20,7 @@ public class WithdrawRunnable implements Runnable{
 			}
 			catch(InterruptedException exception){
 				System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+				break;
 			}
 		}
 

@@ -22,6 +22,7 @@ public class DepositRunnable implements Runnable{
 			}
 			catch(InterruptedException exception){
 				System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+				break;
 			}
 		}
 	}
