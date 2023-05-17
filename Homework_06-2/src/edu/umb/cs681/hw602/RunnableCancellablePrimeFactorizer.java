@@ -1,8 +1,6 @@
 package edu.umb.cs681.hw602;
 
 
-import edu.umb.cs681.hw08.RunnablePrimeFactorizer;
-
 import java.util.concurrent.locks.ReentrantLock;
 
 public class RunnableCancellablePrimeFactorizer extends RunnablePrimeFactorizer {
