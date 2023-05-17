@@ -16,17 +16,13 @@ class EntranceHandler implements Runnable {
     public void run() {
         while (!done) {
             monitor.enter();
+            try {
+                Thread.sleep(1000);
+            }
+            catch(InterruptedException e) {
+                System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+            }
         }
-        if(done){
-            System.out.println("Stopped Entrance Thread #" + Thread.currentThread().getId());
-        }
-        try {
-            Thread.sleep(1000);
-        }
-        catch(InterruptedException e) {
-            System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
-        }
-
     }
 
 

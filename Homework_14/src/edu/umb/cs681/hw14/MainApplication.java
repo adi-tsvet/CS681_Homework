@@ -39,11 +39,5 @@ public class MainApplication {
         for (Thread thread : threads) {
             thread.interrupt();
         }
-
-        // Join all the threads
-        for (Thread thread : threads) {
-            thread.join();
-        }
-
     }
 }
