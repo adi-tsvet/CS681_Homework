@@ -24,14 +24,13 @@ public class RequestHandler implements Runnable {
             accessCounter.increment(file); // Calls Increment method
             //Calls getCount method
             System.out.println("Access count for " + file + ": " + accessCounter.getCount(file));
-        }
-
-        try {
-            Thread.sleep(1000);
-        }catch(InterruptedException e) {
-            System.out.println("Thread #"+Thread.currentThread().getId() + "Thread Interrupted");
+            // Make the thread sleep and then interrupt will be called to terminate.
+            try {
+                Thread.sleep(1000);
+            }catch(InterruptedException e) {
+                System.out.println("Thread #"+Thread.currentThread().getId() + " Interrupted");
+                break;
+            }
         }
     }
-
-
 }
